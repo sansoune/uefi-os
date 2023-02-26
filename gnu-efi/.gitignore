@@ -1,0 +1,12 @@
+/apps
+/gnuefi
+/inc
+/lib
+/x86_64
+/ChangeLog
+/Make.defaults
+/Make.rules
+/README.efilib
+/README.elilo
+/README.git
+/README.gnuefi
