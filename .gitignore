@@ -1,7 +1,5 @@
 /OVMFbin
-/kernel
-!/kernel/src
-!/kernel/linker.ld
-!/kernel/Makefile
-/gnu-efi
-!/gnu-efi/bootloader
+!kernel/src/
+!kernel/linker.ld
+!kernel/Makefile
+
