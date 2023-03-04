@@ -2,7 +2,7 @@
 
 void putchar(FrameBuffer* buffer, PSF1_FONT* font, unsigned int color, char chr, unsigned int x, unsigned int y) {
 	unsigned int* pixPtr = (unsigned int*)buffer->BaseAddress;
-	char* fontPtr = font->glyphBuffer + (chr * font->psf1_header->charSize);
+	char* fontPtr = (char*)font->glyphBuffer + (chr * font->psf1_header->charSize);
 	for (unsigned long yy = y; yy < y + 16 ; yy++)
 	{
 		for (unsigned long xx = x; xx < x + 8; xx++)
@@ -30,13 +30,14 @@ Point CursorPosition;
 unsigned int color = 0xffffffff;
 
 void print(const char* str) {
-	const char* chr = str;
+	const char* chr = (char*)str;
 	while (*chr != 0)
 	{
         if(*chr == '\n') {
             CursorPosition.x = 0;
             CursorPosition.y += 16;
-            chr+= 2;    
+            chr++;
+			continue;    
         }
 		putchar(frame_buffer, text_font, color, *chr, CursorPosition.x, CursorPosition.y);
 		CursorPosition.x += 8;
