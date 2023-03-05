@@ -5,7 +5,7 @@ char int_to_string[256];
 
 const char* toString(int num) {
     uint8_t size;
-    uint32_t sizeTest = num;
+    uint64_t sizeTest = num;
     while (sizeTest / 10 > 0)
     {
         sizeTest /= 10;

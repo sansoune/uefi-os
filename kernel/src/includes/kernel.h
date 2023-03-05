@@ -7,6 +7,7 @@
 #include  "memory.h"
 #include "bitmap.h"
 #include "pageframeAlloc.h"
+#include "paging.h"
 
 typedef struct {
 	FrameBuffer* framebuffer;

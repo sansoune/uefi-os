@@ -4,9 +4,7 @@
 #include "bitmap.h"
 #include "memory.h"
 
-typedef struct {
-    bitmap_t* PageBitmap;
-} PageFrameAllocator;
+
 
 void ReadEFIMemoryMap(EFI_MEMORY_DESCIPTOR* mMap, size_t mMapSize, size_t mMapDescSize);
 void FreePage(void* address);

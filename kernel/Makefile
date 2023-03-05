@@ -18,6 +18,7 @@ BOOTEFI := $(GNUEFI)/x86_64/bootloader/main.efi
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
 
 SRC = $(call rwildcard,$(SRCDIR),*.c)          
+SRC += $(call rwildcard,$(SRCDIR),*.cpp)          
 OBJS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRC))
 DIRS = $(wildcard $(SRCDIR)/*)
 

@@ -6,5 +6,5 @@ typedef struct {
     size_t size;
 } bitmap_t;
 
-int Bitmap_get(bitmap_t* bitmap, uint64_t index);
-void bitmam_set(bitmap_t* bitmap,uint64_t index, int value);
+bool Bitmap_get(bitmap_t* bitmap, uint64_t index);
+void bitmam_set(bitmap_t* bitmap,uint64_t index, bool value);

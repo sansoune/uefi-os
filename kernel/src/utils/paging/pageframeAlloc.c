@@ -1,4 +1,4 @@
-#include "../includes/pageframeAlloc.h"
+#include "../../includes/pageframeAlloc.h"
 
 uint64_t freeMemory;
 uint64_t reservedMemory;
@@ -11,14 +11,14 @@ void InitBitmap(size_t bitmapSize, void* bufferAddress) {
     PageBitmap.size = bitmapSize;
     PageBitmap.data = (uint8_t*)bufferAddress;
     for (int i = 0; i < bitmapSize; i++) {
-        *(uint8_t*)(PageBitmap.data + i) =0;
+        *(uint8_t*)(PageBitmap.data + i) = 0;
     }
 }
 
 void FreePage(void* address) {
     uint64_t index = (uint64_t)address / 4096;
-    if (Bitmap_get(&PageBitmap, index) == 0) return;
-    bitmam_set(&PageBitmap, index, 0);
+    if (Bitmap_get(&PageBitmap, index) == false) return;
+    bitmam_set(&PageBitmap, index, false);
     freeMemory += 4096;
     usedMemory -= 4096;
 }
@@ -31,8 +31,8 @@ void FreePages(void* address, uint64_t pageCount) {
 
 void LockPage(void* address) {
     uint64_t index = (uint64_t)address /4096;
-    if(Bitmap_get(&PageBitmap, index) == 1) return;
-    bitmam_set(&PageBitmap, index, 1);
+    if(Bitmap_get(&PageBitmap, index) == true) return;
+    bitmam_set(&PageBitmap, index, true);
     freeMemory -= 4096;
     usedMemory += 4096;
 }
@@ -45,8 +45,8 @@ void LockPages(void* address, uint64_t pageCount) {
 
 void ReservePage(void* address){
     uint64_t index = (uint64_t)address / 4096;
-    if(Bitmap_get(&PageBitmap, index) == 1) return;
-    bitmam_set(&PageBitmap, index, 1);
+    if(Bitmap_get(&PageBitmap, index) == true) return;
+    bitmam_set(&PageBitmap, index, true);
     freeMemory -= 4096;
     reservedMemory += 4096;
 }
@@ -59,8 +59,8 @@ void ReservePages(void* address, uint64_t pageCount) {
 
 void UnreservePage(void* address) {
     uint64_t index = (uint64_t)address / 4096;
-    if(Bitmap_get(&PageBitmap, index) == 0) return;
-    bitmam_set(&PageBitmap, index, 0);
+    if(Bitmap_get(&PageBitmap, index) == false) return;
+    bitmam_set(&PageBitmap, index, false);
     freeMemory += 4096;
     reservedMemory -= 4096;
 }

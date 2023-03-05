@@ -18,24 +18,27 @@ void _start(BootInfo* bootInfo) {
 	uint64_t kernelPages = (uint64_t)kernel_size / 4096 + 1;
 	LockPages(&__kernel_start, kernelPages);
 
-	print("Free RAM: ");
-	print(toString(GetFreeRam() / 1024));
-	print(" KB\n");
-
-	print("used RAM: ");
-	print(toString(GetUsedRam() / 1024));
-	print(" KB\n");
-
-	print("Reserved RAM: ");
-	print(toString(GetReservedRam() / 1024));
-	print(" KB\n");
-
-	for (int i = 0; i < 20; i++)
-	{
-		void* address = RequestPage();
-		print(hex_to_String((uint64_t)address));
-		print("\n");
+	PageTable* PML4 = (PageTable*)RequestPage();
+	memset(PML4, 0, 0x1000);
+	
+	PageTableManager pageTableManagr = PageTableManageer(PML4);
+	
+	for (uint64_t i = 0; i < GetMemorySize(bootInfo->mMap, mMapEntries, bootInfo->mMapDescriptorSize); i+=0x1000) {
+		MapMemory((void*)1, (void*)1, pageTableManagr);
 	}
 	
+
+	uint64_t fbBase = (uint64_t)bootInfo->framebuffer->BaseAddress;
+	uint64_t fbSize = (uint64_t)bootInfo->framebuffer->BufferSize + 0x1000;
+	for(uint64_t i = fbBase; i < fbBase + fbSize; i += 4096) {
+		MapMemory((void*)i, (void*)i, pageTableManagr);
+	}
+
+
+	switchPML4(PML4);
+
+	print("i am in the memory map! \n");
+	
+
     return ;
 }
