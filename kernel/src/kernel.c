@@ -24,7 +24,7 @@ void _start(BootInfo* bootInfo) {
 	PageTableManager pageTableManagr = PageTableManageer(PML4);
 	
 	for (uint64_t i = 0; i < GetMemorySize(bootInfo->mMap, mMapEntries, bootInfo->mMapDescriptorSize); i+=0x1000) {
-		MapMemory((void*)1, (void*)1, pageTableManagr);
+		MapMemory((void*)i, (void*)i, pageTableManagr);
 	}
 	
 
