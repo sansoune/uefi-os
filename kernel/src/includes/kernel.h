@@ -8,6 +8,7 @@
 #include "bitmap.h"
 #include "pageframeAlloc.h"
 #include "paging.h"
+#include "gdt.h"
 
 typedef struct {
 	FrameBuffer* framebuffer;

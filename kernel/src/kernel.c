@@ -7,12 +7,12 @@ extern uint64_t __kernel_end;
 
 void _start(BootInfo* bootInfo) {
 	init_graphics(bootInfo->framebuffer, bootInfo->font);
-	print("hello ya yassine \n");
 
 	uint64_t mMapEntries = bootInfo->mMapSize / bootInfo->mMapDescriptorSize;
 
 	ReadEFIMemoryMap(bootInfo->mMap, bootInfo->mMapSize, bootInfo->mMapDescriptorSize);
 
+	GDTInit();
 	
 	uint64_t kernel_size = (uint64_t)&__kernel_end - (uint64_t)&__kernel_start;
 	uint64_t kernelPages = (uint64_t)kernel_size / 4096 + 1;
@@ -30,15 +30,23 @@ void _start(BootInfo* bootInfo) {
 
 	uint64_t fbBase = (uint64_t)bootInfo->framebuffer->BaseAddress;
 	uint64_t fbSize = (uint64_t)bootInfo->framebuffer->BufferSize + 0x1000;
+	LockPages((void*)fbBase, fbSize / 0x1000 + 1);
 	for(uint64_t i = fbBase; i < fbBase + fbSize; i += 4096) {
 		MapMemory((void*)i, (void*)i, pageTableManagr);
 	}
 
-
+	memset(bootInfo->framebuffer->BaseAddress, 0, bootInfo->framebuffer->BufferSize);
 	switchPML4(PML4);
+	
 
 	print("i am in the memory map! \n");
 	
+	MapMemory((void*)0x600000000, (void*)0x80000, pageTableManagr);
+	uint64_t* test = (uint64_t*)0x600000000;
+	*test = 26;
+	print(toString(*test));
 
+	while (true);
+	
     return ;
 }

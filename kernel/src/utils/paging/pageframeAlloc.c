@@ -3,6 +3,7 @@
 uint64_t freeMemory;
 uint64_t reservedMemory;
 uint64_t usedMemory;
+uint64_t Pindex = 0;
 int Initialized = 0;
 
 static bitmap_t PageBitmap;
@@ -18,9 +19,11 @@ void InitBitmap(size_t bitmapSize, void* bufferAddress) {
 void FreePage(void* address) {
     uint64_t index = (uint64_t)address / 4096;
     if (Bitmap_get(&PageBitmap, index) == false) return;
-    bitmam_set(&PageBitmap, index, false);
-    freeMemory += 4096;
-    usedMemory -= 4096;
+    if(bitmam_set(&PageBitmap, index, false)){
+        freeMemory += 4096;
+        usedMemory -= 4096;
+        if(Pindex > index) Pindex = index;
+    }
 }
 
 void FreePages(void* address, uint64_t pageCount) {
@@ -32,9 +35,10 @@ void FreePages(void* address, uint64_t pageCount) {
 void LockPage(void* address) {
     uint64_t index = (uint64_t)address /4096;
     if(Bitmap_get(&PageBitmap, index) == true) return;
-    bitmam_set(&PageBitmap, index, true);
-    freeMemory -= 4096;
-    usedMemory += 4096;
+    if(bitmam_set(&PageBitmap, index, true)){
+        freeMemory -= 4096;
+        usedMemory += 4096;
+    }
 }
 
 void LockPages(void* address, uint64_t pageCount) {
@@ -46,9 +50,10 @@ void LockPages(void* address, uint64_t pageCount) {
 void ReservePage(void* address){
     uint64_t index = (uint64_t)address / 4096;
     if(Bitmap_get(&PageBitmap, index) == true) return;
-    bitmam_set(&PageBitmap, index, true);
-    freeMemory -= 4096;
-    reservedMemory += 4096;
+    if(bitmam_set(&PageBitmap, index, true)){
+        freeMemory -= 4096;
+        reservedMemory += 4096;
+    }
 }
 
 void ReservePages(void* address, uint64_t pageCount) {
@@ -60,9 +65,11 @@ void ReservePages(void* address, uint64_t pageCount) {
 void UnreservePage(void* address) {
     uint64_t index = (uint64_t)address / 4096;
     if(Bitmap_get(&PageBitmap, index) == false) return;
-    bitmam_set(&PageBitmap, index, false);
-    freeMemory += 4096;
-    reservedMemory -= 4096;
+    if(bitmam_set(&PageBitmap, index, false)){
+        freeMemory += 4096;
+        reservedMemory -= 4096;
+        if(Pindex > index) Pindex = index;
+    }
 }
 
 void UnreservePages(void* address, uint64_t pageCount) {
@@ -73,7 +80,7 @@ void UnreservePages(void* address, uint64_t pageCount) {
 
 void ReadEFIMemoryMap(EFI_MEMORY_DESCIPTOR* mMap, size_t mMapSize, size_t mMapDescSize) {
     if(Initialized) return;
-    Initialized = 1;
+    Initialized = true;
 
     uint64_t mMapEntries = mMapSize / mMapDescSize;
     void* largestFreeMemSeg = 0;
@@ -120,11 +127,11 @@ uint64_t GetReservedRam() {
 }
 
 void* RequestPage() {
-    for (uint64_t index = 0; index < PageBitmap.size * 8; index++)
+    for (; Pindex < PageBitmap.size * 8; Pindex++)
     {
-        if(Bitmap_get(&PageBitmap, index) == 1) continue;
-        LockPage((void*)(index * 4096));
-        return (void*)(index * 4096);
+        if(Bitmap_get(&PageBitmap, Pindex) == true) continue;
+        LockPage((void*)(Pindex * 4096));
+        return (void*)(Pindex * 4096);
     }
     
     return 0;
