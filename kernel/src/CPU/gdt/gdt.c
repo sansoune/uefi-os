@@ -15,5 +15,6 @@ void GDTInit() {
     GDTDescriptor gdtDescriptor;
     gdtDescriptor.size = sizeof(GDT) - 1;
     gdtDescriptor.offset = (uint64_t)&DefaultGDT;
-    LoadGDT(&gdtDescriptor);
+    // LoadGDT(&gdtDescriptor);
+    __asm__ volatile("lgdt %0" : : "m"(gdtDescriptor));
 }
