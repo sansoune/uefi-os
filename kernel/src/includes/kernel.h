@@ -9,6 +9,7 @@
 #include "pageframeAlloc.h"
 #include "paging.h"
 #include "gdt.h"
+#include "idt.h"
 
 typedef struct {
 	FrameBuffer* framebuffer;

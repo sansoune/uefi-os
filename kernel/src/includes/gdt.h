@@ -2,7 +2,7 @@
 #include "stdint.h"
 
 typedef struct {
-    uint64_t size;
+    uint16_t size;
     uint64_t offset;
 } __attribute__((packed)) GDTDescriptor;
 
@@ -25,5 +25,4 @@ typedef struct {
 } __attribute__((packed)) GDT;
 
 extern GDT DefaultGDT;
-extern void LoadGDT(GDTDescriptor* gdtDescriptor);
 void GDTInit();

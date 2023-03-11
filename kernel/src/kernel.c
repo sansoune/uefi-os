@@ -13,6 +13,7 @@ void _start(BootInfo* bootInfo) {
 	ReadEFIMemoryMap(bootInfo->mMap, bootInfo->mMapSize, bootInfo->mMapDescriptorSize);
 
 	GDTInit();
+	PrepareInterrupts();
 	
 	uint64_t kernel_size = (uint64_t)&__kernel_end - (uint64_t)&__kernel_start;
 	uint64_t kernelPages = (uint64_t)kernel_size / 4096 + 1;
@@ -45,6 +46,8 @@ void _start(BootInfo* bootInfo) {
 	uint64_t* test = (uint64_t*)0x600000000;
 	*test = 26;
 	print(toString(*test));
+
+	asm("int $0x0E");
 
 	while (true);
 	
