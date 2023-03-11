@@ -13,7 +13,9 @@ void _start(BootInfo* bootInfo) {
 	ReadEFIMemoryMap(bootInfo->mMap, bootInfo->mMapSize, bootInfo->mMapDescriptorSize);
 
 	GDTInit();
-	PrepareInterrupts();
+	IDTInit();
+	asm("sti");
+	// PrepareInterrupts();
 	
 	uint64_t kernel_size = (uint64_t)&__kernel_end - (uint64_t)&__kernel_start;
 	uint64_t kernelPages = (uint64_t)kernel_size / 4096 + 1;
@@ -21,6 +23,9 @@ void _start(BootInfo* bootInfo) {
 
 	PageTable* PML4 = (PageTable*)RequestPage();
 	memset(PML4, 0, 0x1000);
+
+	uint64_t stack = (uint64_t)RequestPage() + 0x1000;
+	asm("mov %0, %%rsp" : : "r"(stack));
 	
 	PageTableManager pageTableManagr = PageTableManageer(PML4);
 	
@@ -38,7 +43,7 @@ void _start(BootInfo* bootInfo) {
 
 	memset(bootInfo->framebuffer->BaseAddress, 0, bootInfo->framebuffer->BufferSize);
 	switchPML4(PML4);
-	
+
 
 	print("i am in the memory map! \n");
 	
@@ -47,7 +52,7 @@ void _start(BootInfo* bootInfo) {
 	*test = 26;
 	print(toString(*test));
 
-	asm("int $0x0E");
+	// asm("int $0x0E");
 
 	while (true);
 	
