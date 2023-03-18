@@ -13,8 +13,9 @@ void _start(BootInfo* bootInfo) {
 	ReadEFIMemoryMap(bootInfo->mMap, bootInfo->mMapSize, bootInfo->mMapDescriptorSize);
 
 	GDTInit();
+	// RemapPIC();
 	IDTInit();
-	asm("sti");
+	// asm("sti");
 	// PrepareInterrupts();
 	
 	uint64_t kernel_size = (uint64_t)&__kernel_end - (uint64_t)&__kernel_start;
@@ -51,6 +52,12 @@ void _start(BootInfo* bootInfo) {
 	uint64_t* test = (uint64_t*)0x600000000;
 	*test = 26;
 	print(toString(*test));
+
+	// for (unsigned long long i = 0; i < 10000000000ULL; i++) {}
+
+	int a = 3;
+	int b = 0;
+	int c = a / b;
 
 	// asm("int $0x0E");
 

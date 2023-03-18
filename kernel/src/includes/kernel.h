@@ -10,6 +10,7 @@
 #include "paging.h"
 #include "gdt.h"
 #include "idt.h"
+#include "pic.h"
 
 typedef struct {
 	FrameBuffer* framebuffer;
