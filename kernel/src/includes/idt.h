@@ -28,3 +28,4 @@ typedef struct {
 
 
 void IDTInit();
+void SetIDTGate(uint16_t index, uint64_t handler, uint16_t sel, uint8_t flags);

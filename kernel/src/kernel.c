@@ -13,8 +13,8 @@ void _start(BootInfo* bootInfo) {
 	ReadEFIMemoryMap(bootInfo->mMap, bootInfo->mMapSize, bootInfo->mMapDescriptorSize);
 
 	GDTInit();
-	// RemapPIC();
 	IDTInit();
+	install();
 	// asm("sti");
 	// PrepareInterrupts();
 	
@@ -52,12 +52,23 @@ void _start(BootInfo* bootInfo) {
 	uint64_t* test = (uint64_t*)0x600000000;
 	*test = 26;
 	print(toString(*test));
+	print("\n");
 
-	// for (unsigned long long i = 0; i < 10000000000ULL; i++) {}
+	for (unsigned long long i = 0; i < 10000000000ULL; i++) {}
 
-	int a = 3;
-	int b = 0;
-	int c = a / b;
+	// int a = 3;
+	// int b = 0;
+	// int c = a / b;
+	// asm( "div %ah" );
+	int x = 5, y = 0, z;
+
+    __asm__ ("movl %1, %%eax;"
+             "movl %2, %%ebx;"
+             "idivl %%ebx;"
+             "movl %%eax, %0;"
+             : "=r" (z)
+             : "r" (x), "r" (y)
+             : "%eax", "%ebx");
 
 	// asm("int $0x0E");
 

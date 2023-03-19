@@ -25,16 +25,23 @@ void gdt_set_gate(int num, uint32_t base, uint32_t limit, uint8_t access, uint8_
 }
 
 void GDTInit() {
-    gdtr.size = (sizeof(GDTEntry) * 3) - 1;
+    gdtr.size = (sizeof(GDTEntry) * 6) - 1;
     gdtr.offset = (uint32_t)&gdt;
 
     gdt_set_gate(0, 0, 0, 0, 0);                // Null segment
-    gdt_set_gate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF); // Code segment
-    gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
+    gdt_set_gate(1, 0, 0xFFFFFFFF, 0x9A, 0xAF); // Code segment
+    gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xAF);
     gdt_set_gate(3, 0, 0, 0, 0);
-    gdt_set_gate(4, 0, 0xFFFFFFFF, 0xFA, 0xCF);
-    gdt_set_gate(5, 0, 0xFFFFFFFF, 0xF2, 0xCF);
+    gdt_set_gate(4, 0, 0xFFFFFFFF, 0xFA, 0xAF);
+    gdt_set_gate(5, 0, 0xFFFFFFFF, 0xF2, 0xAF);
 
     // LoadGDT(&gdtDescriptor);
     __asm__ volatile("lgdt %0" : : "m"(gdtr));
+    __asm__ volatile("mov $0x10, %%ax\n\t"
+                    "mov %%ax, %%ds\n\t"
+                    "mov %%ax, %%es\n\t"
+                    "mov %%ax, %%fs\n\t"
+                    "mov %%ax, %%gs\n\t"
+                    "mov %%ax, %%ss\n\t"
+                    : : : "%ax");
 }
