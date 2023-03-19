@@ -31,3 +31,5 @@ typedef struct
 
 void init_graphics(FrameBuffer* buffer, PSF1_FONT* font);
 void print(const char* str);
+void clear(uint32_t colorr);
+void setColor(uint32_t clr);

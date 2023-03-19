@@ -29,6 +29,25 @@ Point CursorPosition;
 
 unsigned int color = 0xffffffff;
 
+void setColor(uint32_t clr) {
+	color = clr;
+}
+
+void clear(uint32_t colorr) {
+	uint64_t fbase = (uint64_t)frame_buffer->BaseAddress;
+	uint64_t bytesPerScanline = frame_buffer->PixelPerScanline * 4;
+	uint64_t fbHeight = frame_buffer->Height;
+	uint64_t fbsize = frame_buffer->BufferSize;
+
+	for(int verticalLine = 0; verticalLine < fbHeight; verticalLine++) {
+		uint64_t pixPtrBase = fbase + (bytesPerScanline * verticalLine);
+		for(uint32_t* pixPtr = (uint32_t*)pixPtrBase; pixPtr < (uint32_t*)(pixPtrBase + bytesPerScanline); pixPtr++) {
+			*pixPtr = colorr;
+		}
+	}
+	CursorPosition.y = 0;
+}
+
 void print(const char* str) {
 	const char* chr = (char*)str;
 	while (*chr != 0)

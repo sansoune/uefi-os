@@ -3,6 +3,7 @@
 #include "stdint.h"
 #include "stdio.h"
 #include "idt.h"
+#include "panic.h"
 
 extern void isr0();
 

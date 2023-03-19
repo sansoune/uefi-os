@@ -3,7 +3,6 @@
 #include "stdio.h"
 #include "pageframeAlloc.h"
 #include "memory.h"
-#include "isr.h"
 #include "pic.h"
 
 #define IDT_TA_InterruptGate 0b10001110

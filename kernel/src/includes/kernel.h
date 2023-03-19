@@ -4,12 +4,14 @@
 #include "stdint.h"
 #include "efiMemory.h"
 #include "conversion.h"
-#include  "memory.h"
+#include "memory.h"
 #include "bitmap.h"
 #include "pageframeAlloc.h"
 #include "paging.h"
 #include "gdt.h"
 #include "idt.h"
+#include "isr.h"
+#include "panic.h"
 #include "pic.h"
 
 typedef struct {

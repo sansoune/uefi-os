@@ -54,23 +54,18 @@ void _start(BootInfo* bootInfo) {
 	print(toString(*test));
 	print("\n");
 
-	for (unsigned long long i = 0; i < 10000000000ULL; i++) {}
+	// for (unsigned long long i = 0; i < 10000000000ULL; i++) {}
 
-	// int a = 3;
-	// int b = 0;
-	// int c = a / b;
-	// asm( "div %ah" );
-	int x = 5, y = 0, z;
+	// int x = 5, y = 0, z;
 
-    __asm__ ("movl %1, %%eax;"
-             "movl %2, %%ebx;"
-             "idivl %%ebx;"
-             "movl %%eax, %0;"
-             : "=r" (z)
-             : "r" (x), "r" (y)
-             : "%eax", "%ebx");
+    // __asm__ ("movl %1, %%eax;"
+    //          "movl %2, %%ebx;"
+    //          "idivl %%ebx;"
+    //          "movl %%eax, %0;"
+    //          : "=r" (z)
+    //          : "r" (x), "r" (y)
+    //          : "%eax", "%ebx");
 
-	// asm("int $0x0E");
 
 	while (true);
 	
