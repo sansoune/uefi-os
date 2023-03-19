@@ -4,6 +4,13 @@
 extern uint64_t __kernel_start;
 extern uint64_t __kernel_end;
 
+// void keyboard_handler() {
+// 	print("pressed");
+// 	uint8_t scancode = inb(0x60);
+// 	// PIC_EndMaster();
+// 	return;
+// }
+
 
 void _start(BootInfo* bootInfo) {
 	init_graphics(bootInfo->framebuffer, bootInfo->font);
@@ -15,7 +22,12 @@ void _start(BootInfo* bootInfo) {
 	GDTInit();
 	IDTInit();
 	install();
-	// asm("sti");
+	pic_remap();
+	// SetIDTGate(33, (uint64_t)keyboard_handler, 0x08, 0x8E);
+	outb(PIC1_DATA, 0b11111101);
+	outb(PIC2_DATA, 0b11111111);
+	asm("sti");
+	
 	// PrepareInterrupts();
 	
 	uint64_t kernel_size = (uint64_t)&__kernel_end - (uint64_t)&__kernel_start;
@@ -42,8 +54,8 @@ void _start(BootInfo* bootInfo) {
 		MapMemory((void*)i, (void*)i, pageTableManagr);
 	}
 
-	memset(bootInfo->framebuffer->BaseAddress, 0, bootInfo->framebuffer->BufferSize);
 	switchPML4(PML4);
+	memset(bootInfo->framebuffer->BaseAddress, 0, bootInfo->framebuffer->BufferSize);
 
 
 	print("i am in the memory map! \n");
@@ -53,6 +65,7 @@ void _start(BootInfo* bootInfo) {
 	*test = 26;
 	print(toString(*test));
 	print("\n");
+	print(toString(sizeof(IDTDescEntry)));
 
 	// for (unsigned long long i = 0; i < 10000000000ULL; i++) {}
 
@@ -65,6 +78,9 @@ void _start(BootInfo* bootInfo) {
     //          : "=r" (z)
     //          : "r" (x), "r" (y)
     //          : "%eax", "%ebx");
+
+	// int* fault = (int*)0x80000000000;
+	// *fault = 2;
 
 
 	while (true);

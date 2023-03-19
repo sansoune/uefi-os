@@ -61,7 +61,7 @@ void isr14_handler() {
     for(;;);
 }
 void isr15_handler() {
-    Panic("Reserved\n");
+    Panic("Reserved1\n");
     for(;;);
 }
 void isr16_handler() {
@@ -85,43 +85,47 @@ void isr20_handler() {
     for(;;);
 }
 void isr21_handler() {
-    Panic("Reserved\n");
+    Panic("Control Protection Exception\n");
     for(;;);
 }
 void isr22_handler() {
-    Panic("Reserved\n");
+    Panic("Reserved2\n");
     for(;;);
 }
 void isr23_handler() {
-    Panic("Reserved\n");
+    Panic("Reserved3\n");
     for(;;);
 }
 void isr24_handler() {
-    Panic("Reserved\n");
+    Panic("Reserved4\n");
     for(;;);
 }
 void isr25_handler() {
-    Panic("Reserved\n");
+    Panic("Reserved5\n");
     for(;;);
 }
 void isr26_handler() {
-    Panic("Reserved\n");
+    Panic("Reserved6\n");
     for(;;);
 }
 void isr27_handler() {
-    Panic("Hypervisor Injection Exception\n");
+    Panic("Reserved7\n");
     for(;;);
 }
 void isr28_handler() {
-    Panic("VMM Communication Exception\n");
+    Panic("Hypervisor Injection Exception\n");
     for(;;);
 }
 void isr29_handler() {
-    Panic("Security exception\n");
+    Panic("VMM Communication Exception\n");
     for(;;);
 }
 void isr30_handler() {
-    Panic("Reserved\n");
+    Panic("Security exception\n");
+    for(;;);
+}
+void isr31_handler() {
+    Panic("Reserved8\n");
     for(;;);
 }
 
@@ -157,4 +161,5 @@ void install() {
     SetIDTGate(28, (uint64_t)isr28_handler, 0x08, 0x8E);
     SetIDTGate(29, (uint64_t)isr29_handler, 0x08, 0x8E);
     SetIDTGate(30, (uint64_t)isr30_handler, 0x08, 0x8E);
+    SetIDTGate(31, (uint64_t)isr31_handler, 0x08, 0x8E);
 }
