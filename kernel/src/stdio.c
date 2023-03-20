@@ -69,3 +69,14 @@ void print(const char* str) {
 	
 }
 
+void putc(char c) {
+	putchar(frame_buffer, text_font, color, c, CursorPosition.x, CursorPosition.y);
+	CursorPosition.x += 8;
+	if (CursorPosition.x + 8 > frame_buffer->Width)
+	{
+		CursorPosition.x = 0;
+		CursorPosition.y +=16;
+	}
+	
+}
+

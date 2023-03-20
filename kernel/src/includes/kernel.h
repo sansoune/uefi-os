@@ -12,6 +12,7 @@
 #include "idt.h"
 #include "isr.h"
 #include "panic.h"
+#include "kb.h"
 #include "pic.h"
 
 typedef struct {

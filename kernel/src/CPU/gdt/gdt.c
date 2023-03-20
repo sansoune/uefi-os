@@ -26,7 +26,7 @@ void gdt_set_gate(int num, uint32_t base, uint32_t limit, uint8_t access, uint8_
 
 void GDTInit() {
     gdtr.size = (sizeof(GDTEntry) * 6) - 1;
-    gdtr.offset = (uint32_t)&gdt;
+    gdtr.offset = (uint64_t)&gdt;
 
     gdt_set_gate(0, 0, 0, 0, 0);                // Null segment
     gdt_set_gate(1, 0, 0xFFFFFFFF, 0x9A, 0xAF); // Code segment

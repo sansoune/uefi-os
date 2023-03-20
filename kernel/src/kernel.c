@@ -4,13 +4,6 @@
 extern uint64_t __kernel_start;
 extern uint64_t __kernel_end;
 
-// void keyboard_handler() {
-// 	print("pressed");
-// 	uint8_t scancode = inb(0x60);
-// 	// PIC_EndMaster();
-// 	return;
-// }
-
 
 void _start(BootInfo* bootInfo) {
 	init_graphics(bootInfo->framebuffer, bootInfo->font);
@@ -23,10 +16,10 @@ void _start(BootInfo* bootInfo) {
 	IDTInit();
 	install();
 	pic_remap();
-	// SetIDTGate(33, (uint64_t)keyboard_handler, 0x08, 0x8E);
 	outb(PIC1_DATA, 0b11111101);
 	outb(PIC2_DATA, 0b11111111);
 	asm("sti");
+	SetIDTGate(33, (uint64_t)keyboard_handler, 0x08, 0x8E);
 	
 	// PrepareInterrupts();
 	
