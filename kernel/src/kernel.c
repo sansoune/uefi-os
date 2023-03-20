@@ -4,6 +4,7 @@
 extern uint64_t __kernel_start;
 extern uint64_t __kernel_end;
 
+void KeyboardIsr();
 
 void _start(BootInfo* bootInfo) {
 	init_graphics(bootInfo->framebuffer, bootInfo->font);
@@ -19,7 +20,7 @@ void _start(BootInfo* bootInfo) {
 	outb(PIC1_DATA, 0b11111101);
 	outb(PIC2_DATA, 0b11111111);
 	asm("sti");
-	SetIDTGate(33, (uint64_t)keyboard_handler, 0x08, 0x8E);
+	SetIDTGate(33, (uint64_t)KeyboardIsr, 0x08, 0x8E);
 	
 	// PrepareInterrupts();
 	

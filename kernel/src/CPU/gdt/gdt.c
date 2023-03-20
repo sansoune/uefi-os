@@ -36,12 +36,16 @@ void GDTInit() {
     gdt_set_gate(5, 0, 0xFFFFFFFF, 0xF2, 0xAF);
 
     // LoadGDT(&gdtDescriptor);
-    __asm__ volatile("lgdt %0" : : "m"(gdtr));
-    __asm__ volatile("mov $0x10, %%ax\n\t"
+    __asm__ volatile("lgdt %0\n\t"
+                    "mov $0x10, %%ax\n\t"
                     "mov %%ax, %%ds\n\t"
                     "mov %%ax, %%es\n\t"
                     "mov %%ax, %%fs\n\t"
                     "mov %%ax, %%gs\n\t"
                     "mov %%ax, %%ss\n\t"
-                    : : : "%ax");
+                    "push $0x08\n\t" 
+                    "push $setLabel\n\t"
+                    "retfq\n\t"
+                    "setLabel: \n\t"
+                    : : "m"(gdtr) : "%ax");
 }
