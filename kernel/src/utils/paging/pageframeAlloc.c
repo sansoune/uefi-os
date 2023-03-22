@@ -112,7 +112,7 @@ void ReadEFIMemoryMap(EFI_MEMORY_DESCIPTOR* mMap, size_t mMapSize, size_t mMapDe
         }
     }
     ReservePages(0, 0x100);
-    LockPages(&PageBitmap, PageBitmap.size / 4096 + 1);
+    LockPages(PageBitmap.data, PageBitmap.size / 4096 + 1);
 }
 
 uint64_t GetFreeRam() {

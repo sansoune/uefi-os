@@ -46,6 +46,7 @@ void clear(uint32_t colorr) {
 		}
 	}
 	CursorPosition.y = 0;
+	CursorPosition.x = 0;
 }
 
 void print(const char* str) {
