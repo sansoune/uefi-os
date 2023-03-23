@@ -38,14 +38,6 @@
     pop rax
 %endmacro
 
-isr0:
-    pushaq
-    cli
-    popaq
-
-
-
-
 
 [EXTERN keyboard_handler]
 

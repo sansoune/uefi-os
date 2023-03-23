@@ -40,10 +40,11 @@
 global isr%1:
 isr%1:
     cli
-    cld
-    push 0              ; push dummy error code
-    push %1             ; push interrupt number
-    jmp isr_common
+    push byte 0              ; push dummy error code
+    push byte %1             ; push interrupt number
+    call isr_common
+    add rsp, 8
+    o64 iret
 
 %endmacro
 
@@ -51,8 +52,10 @@ isr%1:
 global isr%1:
 isr%1:
     cli                    ; cpu pushes an error code to the stack
-    push %1             ; push interrupt number
-    jmp isr_common
+    push byte %1             ; push interrupt number
+    call isr_common
+    add rsp, 16
+    o64 iret
 
 %endmacro
 
@@ -61,16 +64,9 @@ ISR_ERRORCODE 14
 
 extern isr_handler
 isr_common:
-    push rbp
-    mov rbp, rsp
     pushaq
     
-    mov eax, [rbp+32]
-    mov [rsp + 32], eax
-    mov rsi, [rbp + 8]
     call isr_handler
     
     popaq
-    mov rsp, rbp
-    pop rbp
-    o64 iret
+    ret
