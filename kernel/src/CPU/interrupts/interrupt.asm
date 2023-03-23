@@ -40,11 +40,11 @@
 global isr%1:
 isr%1:
     cli
-    push byte 0              ; push dummy error code
-    push byte %1             ; push interrupt number
+    push 0              ; push dummy error code
+    push %1             ; push interrupt number
     call isr_common
-    add rsp, 8
-    o64 iret
+    add rsp, 16
+    iretq
 
 %endmacro
 
@@ -52,10 +52,10 @@ isr%1:
 global isr%1:
 isr%1:
     cli                    ; cpu pushes an error code to the stack
-    push byte %1             ; push interrupt number
+    push %1             ; push interrupt number
     call isr_common
-    add rsp, 16
-    o64 iret
+    add rsp, 8
+    iretq
 
 %endmacro
 

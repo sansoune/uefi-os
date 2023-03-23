@@ -131,7 +131,8 @@ void isr31_handler() {
 
 void isr_handler(Registers* regs) {
     // print(toString(regs->interrupt));
-    print("tested");
+    print("test");
+    while(true);
     // return;
 }
 
