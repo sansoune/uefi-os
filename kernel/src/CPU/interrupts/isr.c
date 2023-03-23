@@ -130,10 +130,12 @@ void isr31_handler() {
 }
 
 void isr_handler(Registers* regs) {
-    // print(toString(regs->interrupt));
+    print("Error: ");
+    print(toString(regs->error));
+    print(", Vector: ");
+    print(toString(regs->interrupt));
+    print(" ");
     print("test");
-    while(true);
-    // return;
 }
 
 void install() {
