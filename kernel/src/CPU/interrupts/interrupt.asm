@@ -1,6 +1,3 @@
-; Keyboard ISR routine
-; Author: Marcin Jabłoński (TheNNX)
-
 [BITS 64]
 %macro pushaq 0
     push rax      ;save current rax
@@ -38,30 +35,42 @@
     pop rax
 %endmacro
 
-isr0:
-    pushaq
+%macro ISR_NOERRORCODE 1
+
+global isr%1:
+isr%1:
     cli
-    popaq
+    cld
+    push 0              ; push dummy error code
+    push %1             ; push interrupt number
+    jmp isr_common
 
+%endmacro
 
+%macro ISR_ERRORCODE 1
+global isr%1:
+isr%1:
+    cli                    ; cpu pushes an error code to the stack
+    push %1             ; push interrupt number
+    jmp isr_common
 
+%endmacro
 
+ISR_NOERRORCODE 0
+ISR_ERRORCODE 14
 
-[EXTERN keyboard_handler]
-
-[GLOBAL KeyboardIsr]
-KeyboardIsr:
+extern isr_handler
+isr_common:
+    push rbp
+    mov rbp, rsp
     pushaq
     
-    mov rcx, [rsp+48]
-    mov rdx, [rsp+56]
-
-    ; Call C ISR handler
-    mov rax, keyboard_handler
-    mov rsi, rcx          ; Pass interrupt number as first argument
-    mov rdi, rdx          ; Pass interrupt frame pointer as second argument
-    call rax
+    mov eax, [rbp+32]
+    mov [rsp + 32], eax
+    mov rsi, [rbp + 8]
+    call isr_handler
     
     popaq
+    mov rsp, rbp
+    pop rbp
     o64 iret
-

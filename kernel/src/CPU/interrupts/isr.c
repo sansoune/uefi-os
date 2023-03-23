@@ -129,8 +129,14 @@ void isr31_handler() {
     for(;;);
 }
 
+void isr_handler(Registers* regs) {
+    // print(toString(regs->interrupt));
+    print("tested");
+    // return;
+}
+
 void install() {
-    SetIDTGate(0, (uint64_t)isr0_handler, 0x08, 0x8E);
+    SetIDTGate(0, (uint64_t)isr0, 0x08, 0x8E);
     SetIDTGate(1, (uint64_t)isr1_handler, 0x08, 0x8E);
     SetIDTGate(2, (uint64_t)isr2_handler, 0x08, 0x8E);
     SetIDTGate(3, (uint64_t)isr3_handler, 0x08, 0x8E);
@@ -144,7 +150,7 @@ void install() {
     SetIDTGate(11, (uint64_t)isr11_handler, 0x08, 0x8E);
     SetIDTGate(12, (uint64_t)isr12_handler, 0x08, 0x8E);
     SetIDTGate(13, (uint64_t)isr13_handler, 0x08, 0x8E);
-    SetIDTGate(14, (uint64_t)isr14_handler, 0x08, 0x8E);
+    SetIDTGate(14, (uint64_t)isr14, 0x08, 0x8E);
     SetIDTGate(15, (uint64_t)isr15_handler, 0x08, 0x8E);
     SetIDTGate(16, (uint64_t)isr16_handler, 0x08, 0x8E);
     SetIDTGate(17, (uint64_t)isr17_handler, 0x08, 0x8E);

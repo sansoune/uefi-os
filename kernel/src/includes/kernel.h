@@ -13,6 +13,7 @@
 #include "isr.h"
 #include "panic.h"
 #include "kb.h"
+#include "mouse.h"
 #include "pic.h"
 
 typedef struct {

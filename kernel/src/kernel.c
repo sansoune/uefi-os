@@ -5,6 +5,7 @@ extern uint64_t __kernel_start;
 extern uint64_t __kernel_end;
 
 void KeyboardIsr();
+void MouseISR();
 
 void _start(BootInfo* bootInfo) {
 	init_graphics(bootInfo->framebuffer, bootInfo->font);
@@ -17,10 +18,8 @@ void _start(BootInfo* bootInfo) {
 	IDTInit();
 	install();
 	pic_remap();
-	outb(PIC1_DATA, 0b11111101);
-	outb(PIC2_DATA, 0b11111111);
-	asm("sti");
 	SetIDTGate(33, (uint64_t)KeyboardIsr, 0x08, 0x8E);
+	// SetIDTGate(43, (uint64_t)MouseISR, 0x08, 0x8E);
 	
 	// PrepareInterrupts();
 	
@@ -61,17 +60,22 @@ void _start(BootInfo* bootInfo) {
 	print("\n");
 	print(toString(sizeof(IDTDescEntry)));
 
+	// init_mouse();
+	outb(PIC1_DATA, 0b11111001);
+	outb(PIC2_DATA, 0b11101111);
+	asm("sti");
+
 	// for (unsigned long long i = 0; i < 10000000000ULL; i++) {}
 
-	// int x = 5, y = 0, z;
+	int x = 5, y = 0, z;
 
-    // __asm__ ("movl %1, %%eax;"
-    //          "movl %2, %%ebx;"
-    //          "idivl %%ebx;"
-    //          "movl %%eax, %0;"
-    //          : "=r" (z)
-    //          : "r" (x), "r" (y)
-    //          : "%eax", "%ebx");
+    __asm__ ("movl %1, %%eax;"
+             "movl %2, %%ebx;"
+             "idivl %%ebx;"
+             "movl %%eax, %0;"
+             : "=r" (z)
+             : "r" (x), "r" (y)
+             : "%eax", "%ebx");
 
 	// int* fault = (int*)0x80000000000;
 	// *fault = 2;
