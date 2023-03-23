@@ -63,12 +63,13 @@ void print_letter(uint8_t scancode) {
 }
 
 void keyboard_handler() {
-	asm("cli");
-	asm("cld");
-	// print("pressed");
 	uint8_t scancode = inb(0x60);
-    if(scancode < 57) print_letter(scancode);;
-	PIC_EndMaster();
-	asm("sti");
+    if(scancode > 57) return;
+    print_letter(scancode);
 	// return;
+}
+
+void init_kb() {
+    IRQ_RegisterHandler(1, keyboard_handler);
+    return;
 }

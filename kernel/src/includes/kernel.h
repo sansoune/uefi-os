@@ -11,6 +11,8 @@
 #include "gdt.h"
 #include "idt.h"
 #include "isr.h"
+#include "irq.h"
+#include "timer.h"
 #include "panic.h"
 #include "kb.h"
 #include "mouse.h"

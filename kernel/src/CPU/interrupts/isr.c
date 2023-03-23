@@ -40,7 +40,8 @@ char *exception_messages[] = {
 
 void isr_handler(Registers* regs) {
     if(g_Handlers[regs->interrupt] != 0) {
-        print("test");
+        // print("test");
+         g_Handlers[regs->interrupt](regs);
     }else {
         Panic(exception_messages[regs->interrupt]);
         asm("hlt");
@@ -81,4 +82,29 @@ void install() {
     SetIDTGate(29, (uint64_t)isr29, 0x08, 0x8E);
     SetIDTGate(30, (uint64_t)isr30, 0x08, 0x8E);
     SetIDTGate(31, (uint64_t)isr31, 0x08, 0x8E);
+    SetIDTGate(32, (uint64_t)isr32, 0x08, 0x8E);
+    SetIDTGate(33, (uint64_t)isr33, 0x08, 0x8E);
+    SetIDTGate(34, (uint64_t)isr34, 0x08, 0x8E);
+    SetIDTGate(35, (uint64_t)isr35, 0x08, 0x8E);
+    SetIDTGate(36, (uint64_t)isr36, 0x08, 0x8E);
+    SetIDTGate(37, (uint64_t)isr37, 0x08, 0x8E);
+    SetIDTGate(38, (uint64_t)isr38, 0x08, 0x8E);
+    SetIDTGate(39, (uint64_t)isr39, 0x08, 0x8E);
+    SetIDTGate(40, (uint64_t)isr40, 0x08, 0x8E);
+    SetIDTGate(41, (uint64_t)isr41, 0x08, 0x8E);
+    SetIDTGate(42, (uint64_t)isr42, 0x08, 0x8E);
+    SetIDTGate(43, (uint64_t)isr43, 0x08, 0x8E);
+    SetIDTGate(44, (uint64_t)isr44, 0x08, 0x8E);
+    SetIDTGate(45, (uint64_t)isr45, 0x08, 0x8E);
+    SetIDTGate(46, (uint64_t)isr46, 0x08, 0x8E);
+    SetIDTGate(47, (uint64_t)isr47, 0x08, 0x8E);
+    SetIDTGate(48, (uint64_t)isr48, 0x08, 0x8E);
+    SetIDTGate(49, (uint64_t)isr49, 0x08, 0x8E);
+    SetIDTGate(50, (uint64_t)isr50, 0x08, 0x8E);
+}
+
+
+void isr_registerhandler(int interrupt, ISRHandler handler) {
+    g_Handlers[interrupt] = handler;
+    // IDT_EnableGate(interrupt);
 }

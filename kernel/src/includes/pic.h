@@ -13,7 +13,15 @@
 
 #define PIC_EOI 0x20
 
-void pic_remap();
+// void pic_remap();
+// void PIC_Unmask(int irq);
+// void PIC_EndMaster();
+// void PIC_End_Slave();
+
+void PIC_configure(uint8_t offsetPic1, uint8_t offsetPic2);
+void PIC_SendEndOfInterrupt(int irq);
+void PIC_Disable();
+void PIC_Mask(int irq);
 void PIC_Unmask(int irq);
-void PIC_EndMaster();
-void PIC_End_Slave();
+uint16_t PIC_ReadIRQRequestRegister();
+uint16_t PIC_ReadInServiceRegister();

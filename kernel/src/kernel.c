@@ -17,11 +17,10 @@ void _start(BootInfo* bootInfo) {
 	GDTInit();
 	IDTInit();
 	install();
-	pic_remap();
-	SetIDTGate(33, (uint64_t)KeyboardIsr, 0x08, 0x8E);
-	// SetIDTGate(43, (uint64_t)MouseISR, 0x08, 0x8E);
+	IRQ_INIT();
+	init_timer();
+	init_kb();
 	
-	// PrepareInterrupts();
 	
 	uint64_t kernel_size = (uint64_t)&__kernel_end - (uint64_t)&__kernel_start;
 	uint64_t kernelPages = (uint64_t)kernel_size / 4096 + 1;
@@ -61,10 +60,6 @@ void _start(BootInfo* bootInfo) {
 	print(toString(sizeof(IDTDescEntry)));
 	print("\n");
 
-	// init_mouse();
-	outb(PIC1_DATA, 0b11111001);
-	outb(PIC2_DATA, 0b11101111);
-	asm("sti");
 
 	// for (unsigned long long i = 0; i < 10000000000ULL; i++) {}
 
