@@ -59,6 +59,7 @@ void _start(BootInfo* bootInfo) {
 	print(toString(*test));
 	print("\n");
 	print(toString(sizeof(IDTDescEntry)));
+	print("\n");
 
 	// init_mouse();
 	outb(PIC1_DATA, 0b11111001);
@@ -67,15 +68,15 @@ void _start(BootInfo* bootInfo) {
 
 	// for (unsigned long long i = 0; i < 10000000000ULL; i++) {}
 
-	int x = 5, y = 0, z;
+	// int x = 5, y = 0, z;
 
-    __asm__ ("movl %1, %%eax;"
-             "movl %2, %%ebx;"
-             "idivl %%ebx;"
-             "movl %%eax, %0;"
-             : "=r" (z)
-             : "r" (x), "r" (y)
-             : "%eax", "%ebx");
+    // __asm__ ("movl %1, %%eax;"
+    //          "movl %2, %%ebx;"
+    //          "idivl %%ebx;"
+    //          "movl %%eax, %0;"
+    //          : "=r" (z)
+    //          : "r" (x), "r" (y)
+    //          : "%eax", "%ebx");
 
 	// int* fault = (int*)0x80000000000;
 	// *fault = 2;
