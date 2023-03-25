@@ -17,6 +17,7 @@
 #include "kb.h"
 #include "heap.h"
 #include "pic.h"
+#include "shell.h"
 
 typedef struct {
 	FrameBuffer* framebuffer;

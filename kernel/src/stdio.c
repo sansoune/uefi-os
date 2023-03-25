@@ -48,6 +48,37 @@ void clear(uint32_t colorr) {
 	CursorPosition.y = 0;
 	CursorPosition.x = 0;
 }
+void ClearChar() {
+
+    if (CursorPosition.x == 0){
+        CursorPosition.x = frame_buffer->Width;
+        CursorPosition.y -= 16;
+        if (CursorPosition.y < 0) CursorPosition.y = 0;
+    }
+
+    unsigned int xOff = CursorPosition.x;
+    unsigned int yOff = CursorPosition.y;
+
+    unsigned int* pixPtr = (unsigned int*)frame_buffer->BaseAddress;
+    for (unsigned long y = yOff; y < yOff + 16; y++){
+        for (unsigned long x = xOff - 8; x < xOff; x++){
+                    *(unsigned int*)(pixPtr + x + (y * frame_buffer->PixelPerScanline)) = color;
+        }
+    }
+
+    CursorPosition.x -= 8;
+
+    if (CursorPosition.x < 0){
+        CursorPosition.x = frame_buffer->Width;
+        CursorPosition.y -= 16;
+        if (CursorPosition.y < 0) CursorPosition.y = 0;
+    }
+
+}
+
+uint16_t getCursorPosition() {
+    return CursorPosition.y * frame_buffer->Width + CursorPosition.x;
+}
 
 void scroll_line() {
     uint32_t* framebuffer = (uint32_t*)frame_buffer->BaseAddress;

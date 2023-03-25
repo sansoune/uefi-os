@@ -54,11 +54,12 @@ void _start(BootInfo* bootInfo) {
 	while (true)
 	{
 		status = true;
+		curretnPos();
 		print("OS>");
 		while(status == true){
     	    buffer = readStr();
     	}
-		print(buffer);
+		shell(buffer);
 		clean_buffer();
 	}
 	

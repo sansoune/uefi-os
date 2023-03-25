@@ -2,6 +2,7 @@
 
 static char buffer[256];
 bool status;
+uint16_t curentpos;
 const char scancode_to_char[] = {
     0, 0, '1','2','3', '4', '5', '6','7', '8', '9', '0', ')', '=',
     0, 0, 'a', 'z', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '^', '$',
@@ -23,20 +24,20 @@ void print_letter(uint8_t scancode) {
     // case 0x01:
     //     print("esc");
     //     break;
-    // case 0x0E:
-    //     //backspace
-	//     // uint16_t pos = GetCursorPos();
-	//     // if(pos > curretPos){
-	// 	//     setCursorPosition(pos - 1);
-    //     // 	print(" ");
-    //    	// 	setCursorPosition(pos - 1);
-    //     // 	int len = strlen(buffer);
-    //     // 	if(len > 0){
-    //     //   		buffer[len - 1] = '\0';
-    //     // 	}
+    case 0x0E:
+        //backspace
+	    uint16_t pos = getCursorPosition();
+	    if(pos > curentpos){
+		    setColor(0x0);
+            ClearChar();
+            setColor(0xffffffff);
+        	int len = strlen(buffer);
+        	if(len > 0){
+          		buffer[len - 1] = '\0';
+        	}
 
-	//     // }
-    //     break;
+	    }
+        break;
     case 0x0F:
         print("    ");
 	    append(buffer, ' ');
@@ -74,6 +75,10 @@ void keyboard_handler() {
 	uint8_t scancode = inb(0x60);
     if(scancode > 57) return;
     print_letter(scancode);
+}
+
+void curretnPos() {
+    curentpos = getCursorPosition();
 }
 
 void init_kb() {

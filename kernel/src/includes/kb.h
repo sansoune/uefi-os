@@ -7,5 +7,6 @@
 
 extern bool status;
 void init_kb();
+void curretnPos();
 void clean_buffer();
 char* readStr();
