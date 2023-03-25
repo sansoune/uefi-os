@@ -48,6 +48,7 @@ void print_letter(uint8_t scancode) {
         print("\n");
 	    append(buffer, '\n');
         status = false;
+        break;
 	// print(buffer);
 	// //buffer[0] = '\0';
 	//     status = false;
