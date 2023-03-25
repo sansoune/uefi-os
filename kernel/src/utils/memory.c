@@ -17,12 +17,12 @@ uint64_t GetMemorySize(EFI_MEMORY_DESCIPTOR* mMap, uint64_t mMapEntries, uint64_
 
 void memset(void* start, uint8_t value, uint64_t num) {
     for (uint64_t i = 0; i < num; i++) {
-        *(uint8_t*)((uint64_t)start + i) = value;
+        ((uint8_t*)start)[i] = value;
     }
 }
 
-void memcpy(uint32_t* source, uint32_t* dest,  int count) {
+void memcpy(void* dest, void* source, int count) {
       for (int i = 0; i < count; i++){
-	      *(dest + i) = *(source + i);
+	   ((uint8_t*)dest)[i] = ((uint8_t*)source)[i];
       }
 }

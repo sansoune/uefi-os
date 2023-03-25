@@ -53,14 +53,10 @@ void scroll_line() {
     uint32_t* framebuffer = (uint32_t*)frame_buffer->BaseAddress;
     uint32_t* tmp = framebuffer;
 	uint64_t line_size = frame_buffer->PixelPerScanline * sizeof(uint32_t);
-    for (uint64_t i = 0; i < frame_buffer->Height - 16; i++) {
-        memcpy(tmp, tmp + frame_buffer->PixelPerScanline, line_size);
-        tmp += frame_buffer->PixelPerScanline;
-    }
-    // for (uint64_t i = 0; i < frame_buffer->PixelPerScanline; i++) {
-    //     *(tmp + i) = 0;
-    // }
-	memset(tmp, 0, line_size);
+    
+    memcpy(tmp, tmp + 16 * frame_buffer->PixelPerScanline, line_size * (frame_buffer->Height - 16));
+    tmp += (frame_buffer->Height - 16) * frame_buffer->PixelPerScanline;
+    memset(tmp, 0, line_size * 16);
     CursorPosition.y -= 16;
 }
 
