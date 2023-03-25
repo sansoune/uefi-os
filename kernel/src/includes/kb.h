@@ -3,7 +3,9 @@
 #include "stdio.h"
 #include "pic.h"
 #include "irq.h"
+#include "string.h"
 
-
-void keyboard_handler();
+extern bool status;
 void init_kb();
+void clean_buffer();
+char* readStr();

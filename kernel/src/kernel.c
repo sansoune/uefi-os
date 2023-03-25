@@ -4,9 +4,6 @@
 extern uint64_t __kernel_start;
 extern uint64_t __kernel_end;
 
-void KeyboardIsr();
-void MouseISR();
-
 void _start(BootInfo* bootInfo) {
 	init_graphics(bootInfo->framebuffer, bootInfo->font);
 
@@ -49,16 +46,22 @@ void _start(BootInfo* bootInfo) {
 	switchPML4(PML4);
 	memset(bootInfo->framebuffer->BaseAddress, 0, bootInfo->framebuffer->BufferSize);
 
+	init_heap((void*)0x0000100000000000, 0x10, pageTableManagr);
 
-	print("i am in the memory map! \n");
+
+	print("welcome my os\n");
+	char* buffer;
+	while (true)
+	{
+		status = true;
+		print("OS>");
+		while(status == true){
+    	    buffer = readStr();
+    	}
+		print(buffer);
+		clean_buffer();
+	}
 	
-	MapMemory((void*)0x600000000, (void*)0x80000, pageTableManagr);
-	uint64_t* test = (uint64_t*)0x600000000;
-	*test = 26;
-	print(toString(*test));
-	print("\n");
-	print(toString(sizeof(IDTDescEntry)));
-	print("\n");
 
 
 	// for (unsigned long long i = 0; i < 10000000000ULL; i++) {}

@@ -15,7 +15,7 @@
 #include "timer.h"
 #include "panic.h"
 #include "kb.h"
-#include "mouse.h"
+#include "heap.h"
 #include "pic.h"
 
 typedef struct {

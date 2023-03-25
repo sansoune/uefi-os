@@ -20,3 +20,9 @@ void memset(void* start, uint8_t value, uint64_t num) {
         *(uint8_t*)((uint64_t)start + i) = value;
     }
 }
+
+void memcpy(uint32_t* source, uint32_t* dest,  int count) {
+      for (int i = 0; i < count; i++){
+	      *(dest + i) = *(source + i);
+      }
+}

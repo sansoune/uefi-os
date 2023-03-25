@@ -1,13 +1,21 @@
 #include "../includes/kb.h"
 
 static char buffer[256];
-int status;
+bool status;
 const char scancode_to_char[] = {
     0, 0, '1','2','3', '4', '5', '6','7', '8', '9', '0', ')', '=',
     0, 0, 'a', 'z', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '^', '$',
     0, 0, 'q', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', '%', '*',
     0, '<', 'w', 'x', 'c', 'v', 'b', 'n', ',', ';' ,':', '!',
 };
+
+char* readStr() {
+     return buffer;
+}
+
+void clean_buffer() {
+     buffer[0] = '\0';
+}
 
 void print_letter(uint8_t scancode) {
     switch (scancode)
@@ -29,17 +37,18 @@ void print_letter(uint8_t scancode) {
 
 	//     // }
     //     break;
-    // case 0x0F:
-    //     print("    ");
-	//     append(buffer, ' ');
-	//     append(buffer, ' ');
-	//     append(buffer, ' ');
-	//     append(buffer, ' ');
-    //     break;
-    // case 0x1C:
-    //     print("\n");
-	//     append(buffer, '\n');
-	// //print(buffer);
+    case 0x0F:
+        print("    ");
+	    append(buffer, ' ');
+	    append(buffer, ' ');
+	    append(buffer, ' ');
+	    append(buffer, ' ');
+        break;
+    case 0x1C:
+        print("\n");
+	    append(buffer, '\n');
+        status = false;
+	// print(buffer);
 	// //buffer[0] = '\0';
 	//     status = false;
 	// //disable_kb();
@@ -48,15 +57,13 @@ void print_letter(uint8_t scancode) {
 	//     print("left shift");
 	//     break;
     case 0x39:
-        print(" ");
-	//     append(buffer, ' ');
+        putc(' ');
+        append(buffer, ' ');
         break;
     default:
-        //print(hex_to_String(scancode));
-	    //print(kbdus[scancode]);
 	    char letter = scancode_to_char[(int)scancode];
 	    putc(letter);
-	    // append(buffer, letter);
+	    append(buffer, letter);
         break;
     }
     return;
@@ -66,7 +73,6 @@ void keyboard_handler() {
 	uint8_t scancode = inb(0x60);
     if(scancode > 57) return;
     print_letter(scancode);
-	// return;
 }
 
 void init_kb() {

@@ -49,6 +49,22 @@ void clear(uint32_t colorr) {
 	CursorPosition.x = 0;
 }
 
+void scroll_line() {
+    uint32_t* framebuffer = (uint32_t*)frame_buffer->BaseAddress;
+    uint32_t* tmp = framebuffer;
+	uint64_t line_size = frame_buffer->PixelPerScanline * sizeof(uint32_t);
+    for (uint64_t i = 0; i < frame_buffer->Height - 16; i++) {
+        memcpy(tmp, tmp + frame_buffer->PixelPerScanline, line_size);
+        tmp += frame_buffer->PixelPerScanline;
+    }
+    // for (uint64_t i = 0; i < frame_buffer->PixelPerScanline; i++) {
+    //     *(tmp + i) = 0;
+    // }
+	memset(tmp, 0, line_size);
+    CursorPosition.y -= 16;
+}
+
+
 void print(const char* str) {
 	const char* chr = (char*)str;
 	while (*chr != 0)
@@ -56,6 +72,9 @@ void print(const char* str) {
         if(*chr == '\n') {
             CursorPosition.x = 0;
             CursorPosition.y += 16;
+			if (CursorPosition.y >= frame_buffer->Height - 16) {
+                scroll_line();
+            }
             chr++;
 			continue;    
         }
@@ -64,6 +83,9 @@ void print(const char* str) {
 		if(CursorPosition.x + 8 > frame_buffer->Width) {
 			CursorPosition.x = 0;
 			CursorPosition.y += 16;
+			if (CursorPosition.y >= frame_buffer->Height - 16) {
+                scroll_line();
+            }
 		}
 		chr++;
 	}
