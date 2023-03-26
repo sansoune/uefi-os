@@ -25,4 +25,5 @@ typedef struct {
 	EFI_MEMORY_DESCIPTOR* mMap;
 	uint64_t mMapSize;
 	uint64_t mMapDescriptorSize;
+	void* rsdp;
 } BootInfo;

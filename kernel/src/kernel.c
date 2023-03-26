@@ -49,13 +49,19 @@ void _start(BootInfo* bootInfo) {
 	init_heap((void*)0x0000100000000000, 0x10, pageTableManagr);
 
 
+	print(__DATE__);
+	print(" ");
+	print(__TIME__);
+	print("\n");
+	print(hex_to_String((uint64_t)bootInfo->rsdp));
+	print("\n");
 	print("welcome my os\n");
 	char* buffer;
 	while (true)
 	{
 		status = true;
-		curretnPos();
 		print("OS>");
+		curretnPos();
 		while(status == true){
     	    buffer = readStr();
     	}
