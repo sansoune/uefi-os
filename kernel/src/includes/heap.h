@@ -11,7 +11,7 @@ struct header_t{
     header_t *tail;
 };
 
-void init_heap(void* heapAddress, size_t heapLength, PageTableManager manager);
+void init_heap(void* heapAddress, size_t heapLength);
 
 void* malloc(size_t size);
 void free(void* address);

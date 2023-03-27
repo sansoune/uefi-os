@@ -5,12 +5,12 @@ void* heapEnd;
 header_t* lastHdr;
 PageTableManager manageer;
 
-void init_heap(void* heapAddress, size_t heapLength, PageTableManager manager) {
+void init_heap(void* heapAddress, size_t heapLength) {
     void* pos = heapAddress;
-    manageer = manager;
+    // manageer = manager;
     for (size_t i = 0; i < heapLength; i++)
     {
-        MapMemory(pos, RequestPage(), manageer);
+        MapMemory(pos, RequestPage(), g_Pagetablemanager);
         pos = (void*)((size_t)pos + 0x1000);
     }
 
@@ -54,7 +54,7 @@ void expandHeap(size_t length) {
 
     for (size_t i = 0; i < pageCount; i++)
     {
-        MapMemory(heapEnd, RequestPage(), manageer);
+        MapMemory(heapEnd, RequestPage(), g_Pagetablemanager);
         heapEnd = (void*)((size_t)heapEnd + 0x1000);
     }
 

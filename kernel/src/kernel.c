@@ -29,10 +29,10 @@ void _start(BootInfo* bootInfo) {
 	uint64_t stack = (uint64_t)RequestPage() + 0x1000;
 	asm("mov %0, %%rsp" : : "r"(stack));
 	
-	PageTableManager pageTableManagr = PageTableManageer(PML4);
+	g_Pagetablemanager = PageTableManageer(PML4);
 	
 	for (uint64_t i = 0; i < GetMemorySize(bootInfo->mMap, mMapEntries, bootInfo->mMapDescriptorSize); i+=0x1000) {
-		MapMemory((void*)i, (void*)i, pageTableManagr);
+		MapMemory((void*)i, (void*)i, g_Pagetablemanager);
 	}
 	
 
@@ -40,13 +40,21 @@ void _start(BootInfo* bootInfo) {
 	uint64_t fbSize = (uint64_t)bootInfo->framebuffer->BufferSize + 0x1000;
 	LockPages((void*)fbBase, fbSize / 0x1000 + 1);
 	for(uint64_t i = fbBase; i < fbBase + fbSize; i += 4096) {
-		MapMemory((void*)i, (void*)i, pageTableManagr);
+		MapMemory((void*)i, (void*)i, g_Pagetablemanager);
 	}
 
 	switchPML4(PML4);
 	memset(bootInfo->framebuffer->BaseAddress, 0, bootInfo->framebuffer->BufferSize);
 
-	init_heap((void*)0x0000100000000000, 0x10, pageTableManagr);
+	init_heap((void*)0x0000100000000000, 0x10);
+	SDTHeader* xsdt = (SDTHeader*)(bootInfo->rsdp->XSDTAddress);
+	MCFGHeader* mcfg = (MCFGHeader*)FindTable(xsdt, (char*)"MCFG");
+	for(int t = 0; t < 4; t++) {
+		putc(mcfg->Header.Signature[t]);
+	}
+	print("\n");
+	EnumeratePCI(mcfg);
+	
 
 
 	print(__DATE__);

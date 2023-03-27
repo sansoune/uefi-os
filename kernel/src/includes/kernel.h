@@ -18,6 +18,8 @@
 #include "heap.h"
 #include "pic.h"
 #include "shell.h"
+#include "acpi.h"
+#include "pci.h"
 
 typedef struct {
 	FrameBuffer* framebuffer;
@@ -25,5 +27,5 @@ typedef struct {
 	EFI_MEMORY_DESCIPTOR* mMap;
 	uint64_t mMapSize;
 	uint64_t mMapDescriptorSize;
-	void* rsdp;
+	RSDP2* rsdp;
 } BootInfo;

@@ -3,6 +3,7 @@
 #include "../../includes/memory.h"
 #include "../../includes/stdio.h"
 
+PageTableManager g_Pagetablemanager;
 
 PageIndexer PageMapIndexer(uint64_t virtualAddress) {
     PageIndexer indexer;

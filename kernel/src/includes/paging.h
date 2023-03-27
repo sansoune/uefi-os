@@ -37,3 +37,5 @@ PageIndexer PageMapIndexer(uint64_t virtualAddress);
 PageTableManager PageTableManageer(PageTable* PML4Address);
 void MapMemory(void* virtualMemory, void* physicalMemory, PageTableManager manager);
 void switchPML4(PageTable* PML4);
+
+extern PageTableManager g_Pagetablemanager;
