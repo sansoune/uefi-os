@@ -27,20 +27,19 @@ void init_heap(void* heapAddress, size_t heapLength) {
 }
 
 void CombineForward(header_t* self) {
-    if(self->head == NULL) return;
-    if(!self->head->free) return;
+    header_t* originalHead = self->head;
 
-    if(self->head == lastHdr) lastHdr == self;
+    if (originalHead == NULL) return;
+    if (!originalHead->free) return;
 
-    if(self->head->head != NULL) {
-        self->head->head->tail = self;
-    }
+    if (originalHead == lastHdr) lastHdr = self;
 
-    self->size = self->size + self->head->size + sizeof(header_t);
+    self->head = originalHead->head;
+    self->size = self->size + originalHead->size + sizeof(header_t);
 }
 
 void CombineBackward(header_t* self) {
-    if(self->tail != NULL && self->tail->free) CombineForward(self->tail);
+    if (self->tail != NULL && self->tail->free) CombineForward(self->tail);
 }
 
 void expandHeap(size_t length) {
@@ -75,7 +74,8 @@ header_t* Split(header_t* self, size_t SplitLength) {
     if(SplitSegLength < 0x10) return NULL;
 
     header_t* newSplitHdr = (header_t*) ((size_t)self + SplitLength + sizeof(header_t));
-    self->head->tail = newSplitHdr;
+    if (self->head)
+        self->head->tail = newSplitHdr;
     newSplitHdr->head = self->head;
     self->head = newSplitHdr;
     newSplitHdr->tail = self;
