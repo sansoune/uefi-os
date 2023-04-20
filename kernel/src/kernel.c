@@ -49,10 +49,6 @@ void _start(BootInfo* bootInfo) {
 	init_heap((void*)0x0000100000000000, 0x10);
 	SDTHeader* xsdt = (SDTHeader*)(bootInfo->rsdp->XSDTAddress);
 	MCFGHeader* mcfg = (MCFGHeader*)FindTable(xsdt, (char*)"MCFG");
-	for(int t = 0; t < 4; t++) {
-		putc(mcfg->Header.Signature[t]);
-	}
-	print("\n");
 	EnumeratePCI(mcfg);
 	
 

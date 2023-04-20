@@ -12,9 +12,15 @@ void EnumerateFunction(uint64_t deviceAddress, uint64_t function) {
     if(pciDeviceHeader->DeviceID == 0) return;
     if(pciDeviceHeader->DeviceID == 0xffff) return;
 
-    print(hex_to_String(pciDeviceHeader->VendorID));
+    print(GetVendorName(pciDeviceHeader->VendorID));
     print(" ");
-    print(hex_to_String(pciDeviceHeader->DeviceID));
+    print(GetDeviceName(pciDeviceHeader->VendorID, pciDeviceHeader->DeviceID));
+    print(" ");
+    print(DeviceClasses[pciDeviceHeader->Class]);
+    print(" ");
+    print(GetSubClassName(pciDeviceHeader->Class, pciDeviceHeader->Subclass));
+    print(" ");
+    print(GetProgramIFName(pciDeviceHeader->Class, pciDeviceHeader->Subclass ,pciDeviceHeader->ProgIF));
     print("\n");
 }
 

@@ -4,6 +4,7 @@
 #include "paging.h"
 #include "stdio.h"
 #include "conversion.h"
+#include "pciDesc.h"
 
 typedef struct {
     uint16_t VendorID;
@@ -21,3 +22,6 @@ typedef struct {
 } PCIDeviceHeader;
 
 void EnumeratePCI(MCFGHeader* mcfg);
+
+extern const char* DeviceClasses[];
+
