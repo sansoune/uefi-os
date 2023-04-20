@@ -50,11 +50,46 @@ typedef struct {
     HBAPort ports[1];
 } HBAMemory;
 
+typedef struct {
+    uint8_t commandFISLength:5;
+    uint8_t atapi:1;
+    uint8_t write:1;
+    uint8_t prefetchable:1;
+
+    uint8_t reset:1;
+    uint8_t bist:1;
+    uint8_t clearBusy:1;
+    uint8_t rsv0:1;
+    uint8_t portMultiplier:4;
+
+    uint16_t prdtLength;
+    uint32_t prdbCount;
+    uint32_t commandTableBaseAddress;
+    uint32_t commandTableBaseAddressUpper;
+    uint32_t rsv1[4];
+} HBACommandHeader;
+
+
+typedef struct {
+HBAPort* hbaPort;
+PortType portType;
+uint8_t* buffer;
+uint8_t portNumber;
+} Port;
+
 
 typedef struct {
     PCIDeviceHeader* pciBaseAddress;
     HBAMemory* ABAR;
+    Port* ports[32];
+    uint8_t portCount;
 } AHCIDriver;
 
 void AHCIDriver_ctor(AHCIDriver* driver, PCIDeviceHeader* pciBaseAddress);
-void AHCIDriver_ProbePorts(AHCIDriver* driver);
+void AHCIDriver_dtor(AHCIDriver* driver);
+
+
+
+void Configure(Port* port);
+void StartCMD(Port* port);
+void StopCMD(Port* port);
