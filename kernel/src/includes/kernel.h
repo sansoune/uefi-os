@@ -20,6 +20,7 @@
 #include "shell.h"
 #include "acpi.h"
 #include "pci.h"
+#include "../drivers/AHCI/ahci.h"
 
 typedef struct {
 	FrameBuffer* framebuffer;

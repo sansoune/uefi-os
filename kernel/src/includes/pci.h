@@ -21,6 +21,28 @@ typedef struct {
     uint8_t BIST;
 } PCIDeviceHeader;
 
+typedef struct {
+    PCIDeviceHeader Header;
+    uint32_t BAR0;
+    uint32_t BAR1;
+    uint32_t BAR2;
+    uint32_t BAR3;
+    uint32_t BAR4;
+    uint32_t BAR5;
+    uint32_t CardbusCISPtr;
+    uint16_t SubsystemVendorId;
+    uint16_t SubsytemId;
+    uint32_t ExpansionROMBaseAddress;
+    uint8_t CapabilitiesPtr;
+    uint8_t Rsv0;
+    uint16_t Rsv1;
+    uint32_t Rsv2;
+    uint8_t InterruptLine;
+    uint8_t InterruptPin;
+    uint8_t MinGrant;
+    uint8_t MaxLatency;
+} PCIHeader;
+
 void EnumeratePCI(MCFGHeader* mcfg);
 
 extern const char* DeviceClasses[];

@@ -36,6 +36,8 @@ void CombineForward(header_t* self) {
         self->head->head->tail = self;
     }
 
+    self->head = self->head->head;
+
     self->size = self->size + self->head->size + sizeof(header_t);
 }
 

@@ -16,3 +16,12 @@ void init_heap(void* heapAddress, size_t heapLength);
 void* malloc(size_t size);
 void free(void* address);
 void expandHeap(size_t length);
+
+
+inline void* new(size_t size) {
+    return malloc(size);
+}
+
+inline void delete(void* p) {
+    free(p);
+}

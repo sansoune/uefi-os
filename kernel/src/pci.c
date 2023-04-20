@@ -1,4 +1,6 @@
 #include "includes/pci.h"
+#include "drivers/AHCI/ahci.h"
+#include "includes/heap.h"
 
 
 void EnumerateFunction(uint64_t deviceAddress, uint64_t function) {
@@ -22,6 +24,21 @@ void EnumerateFunction(uint64_t deviceAddress, uint64_t function) {
     print(" ");
     print(GetProgramIFName(pciDeviceHeader->Class, pciDeviceHeader->Subclass ,pciDeviceHeader->ProgIF));
     print("\n");
+
+    switch (pciDeviceHeader->Class)
+    {
+    case 0x01:
+        switch (pciDeviceHeader->Subclass)
+        {
+        case 0x06:
+            switch (pciDeviceHeader->ProgIF)
+            {
+            case 0x01:
+                AHCIDriver* driver = (AHCIDriver*)malloc(sizeof(AHCIDriver));
+                AHCIDriver_ctor(driver, pciDeviceHeader);
+            }
+        }
+    }
 }
 
 
