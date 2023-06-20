@@ -12,7 +12,10 @@ void shell(char* input) {
     }else if(strcmp(input, "sleep\n") == 0){
         sleep(100);
 		print("just wake up\n");
-    }else {
+    }else if(strcmp(input, "music\n") == 0) {
+		print("palying tetris\n");
+		music();
+	}else {
 		print("Unknown command: ");
 		print(input);
 	}

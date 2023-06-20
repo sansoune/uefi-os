@@ -21,6 +21,8 @@
 #include "acpi.h"
 #include "pci.h"
 #include "../drivers/AHCI/ahci.h"
+#include "PSspeaker.h"
+#include "../Processes/binary_load.h"
 
 typedef struct {
 	FrameBuffer* framebuffer;

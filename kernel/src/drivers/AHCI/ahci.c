@@ -38,7 +38,7 @@ PortType CheckPortType(HBAPort* port) {
     }
 }
 
-bool Read(uint64_t sector, uint32_t sectorCount, void* buffer,Port* port) {
+bool ReadWite(uint64_t sector, uint32_t sectorCount, void* buffer,Port* port, bool Write) {
     uint32_t sectorL = (uint32_t)sector;
     uint32_t sectorH = (uint32_t)(sector >>32);
 
@@ -46,7 +46,12 @@ bool Read(uint64_t sector, uint32_t sectorCount, void* buffer,Port* port) {
 
     HBACommandHeader* cmdHeader = (HBACommandHeader*)port->hbaPort->commandListBase;
     cmdHeader->commandFISLength = sizeof(FIS_REG_H2D)/sizeof(uint32_t);
-    cmdHeader->write = 0; // this is a read
+    if (Write){
+        cmdHeader->write = 1;
+    }
+    else{
+        cmdHeader->write = 0;
+    }
     cmdHeader->prdtLength = 1;
 
     HBACommandTable* commandTable = (HBACommandTable*)(cmdHeader->commandTableBaseAddress);
@@ -61,7 +66,12 @@ bool Read(uint64_t sector, uint32_t sectorCount, void* buffer,Port* port) {
 
     cmdFIS->fisType = FIS_TYPE_REG_H2D;
     cmdFIS->commandControl = 1;
-    cmdFIS->command = ATA_CMD_READ_DMA_EX;
+    if(Write){
+        cmdFIS->command = ATA_CMD_WRITE_DMA_EX;
+    }
+    else{
+        cmdFIS->command = ATA_CMD_READ_DMA_EX;
+    }
 
     cmdFIS->lba0 = (uint8_t)sectorL;
     cmdFIS->lba1 = (uint8_t)(sectorL >> 8);
@@ -133,12 +143,12 @@ void AHCIDriver_ctor(AHCIDriver* driver, PCIDeviceHeader* pciBaseAddress) {
         port->buffer = (uint8_t*)RequestPage();
         memset(port->buffer, 0, 0x1000);
 
-        Read(0, 4, port->buffer, port);
-        for (int t = 0; t < 1024; t++)
-        {
-            putc(port->buffer[t]);
-        }
-        print("\n");
+        ReadWite(0, 4, port->buffer, port, false);
+        // for (int t = 0; t < 1024; t++)
+        // {
+        //     putc(port->buffer[t]);
+        // }
+        // print("\n");
         
     }
     
