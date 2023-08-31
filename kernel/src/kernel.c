@@ -58,14 +58,14 @@ void _start(BootInfo* bootInfo) {
 	print(__TIME__);
 	print("\n");
 	print("welcome my os\n");
-	char div_by_zero [] =   {   0xba, 0x00, 0x00, 0x00, 0x00,         // mov 0x0, edx
-                            0xb8, 0xfa, 0x00, 0x00, 0x00,         // mov 0xfa, eax
-                            0xb9, 0x00, 0x00, 0x00, 0x00,         // mov 0x0, ecx
-                            0xf7, 0xf1                            // div ecx ---> DIV BY 0
-                        };
+	// char div_by_zero [] =   {   0xba, 0x00, 0x00, 0x00, 0x00,         // mov 0x0, edx
+    //                         0xb8, 0xfa, 0x00, 0x00, 0x00,         // mov 0xfa, eax
+    //                         0xb9, 0x00, 0x00, 0x00, 0x00,         // mov 0x0, ecx
+    //                         0xf7, 0xf1                            // div ecx ---> DIV BY 0
+    //                     };
 
-	load_flat_binary_at(div_by_zero, 17, code_loc);
-	run_flat_binary(code_loc);
+	// load_flat_binary_at(div_by_zero, 17, code_loc);
+	// run_flat_binary(code_loc);
 	char* buffer;
 	while (true)
 	{
